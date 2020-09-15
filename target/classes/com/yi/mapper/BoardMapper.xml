@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yi.mapper.BoardMapper">
+
+
+	<select id="getList" resultType="com.yi.domain.BoardVO">
+	<![CDATA[select * from member where memberid > 0
+	]]>
+	</select>
+
+	<insert id="insert">
+		insert into member (name,age,address,phoneNo)
+		values
+		(#{name}, #{age}, #{address}, #{phoneNo})
+	</insert>
+
+	<select id="read" resultType="com.yi.domain.BoardVO">
+		select * from member where name
+		=
+		#{name}
+	</select>
+
+	<delete id="delete">
+		delete from member where memberid = #{memberid}
+	</delete>
+
+	<delete id="remove">
+		delete from member where memberid = #{memberid}
+	</delete>
+
+	<update id="update">
+		update member
+		set name = #{name2},
+		age = #{age},
+		address = #{address},
+		phoneNo = #{phoneNo}
+		where name = #{name}
+	</update>
+
+	<update id="update2">
+		update member
+		set name = #{name},
+		age = #{age},
+		address
+		= #{address},
+		phoneNo = #{phoneNo}
+		where memberid = #{memberid}
+	</update>
+
+	<select id="getListWithPaging"
+		resultType="com.yi.domain.BoardVO">
+
+		SELECT *
+		FROM member
+		WHERE memberid > 0
+		ORDER BY memberid
+		LIMIT #{pageStart}, #{perPageNum}
+
+
+	</select>
+
+	<select id="getTotalCount" resultType="int">
+		select count(*) from
+		member where
+		memberid > 0
+
+	</select>
+
+
+
+
+
+</mapper>

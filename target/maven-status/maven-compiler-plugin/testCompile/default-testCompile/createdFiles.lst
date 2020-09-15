@@ -1,0 +1,7 @@
+com\yi\mapper\BoardMapperTests.class
+com\yi\sample\SampleTests.class
+com\yi\mybatis\MySQLConnectionTest.class
+com\yi\service\BoardServiceTests.class
+com\yi\mybatis\TimeMapperTests.class
+com\yi\controller\BoardControllerTests.class
+com\yi\mybatis\MyBatisTest.class
