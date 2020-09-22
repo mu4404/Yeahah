@@ -27,7 +27,7 @@
 				<table class="table table-striped table-bordered table-hover">
 					<thead>
 						<tr>
-							<th>#번호</th>
+							<th>번호</th>
 							<th>이름</th>
 							<th>나이</th>
 							<th>주소</th>
@@ -37,18 +37,14 @@
 
 					<c:forEach items="${list}" var="board">
 						<tr>
-							<td><c:out value="${board.bno}" /></td>
-							<%-- <td><a href='/board/get?bno=<c:out value="${board.bno}"/>'><c:out value="${board.title}"/></a></td> --%>
+							<td><c:out value="${board.memberid}" /></td>
+							<td><a
+								href='/board/get?memberid=<c:out value="${board.memberid}"/>'><c:out
+										value="${board.name}" /></a></td>
 
-							<td><a class='move' href='<c:out value="${board.bno}"/>'>
-									<c:out value="${board.title}" />
-							</a></td>
-
-							<td><c:out value="${board.writer}" /></td>
-							<td><fmt:formatDate pattern="yyyy-MM-dd"
-									value="${board.regdate}" /></td>
-							<td><fmt:formatDate pattern="yyyy-MM-dd"
-									value="${board.updateDate}" /></td>
+							<td><c:out value="${board.age}" /></td>
+							<td><c:out value="${board.address}" /></td>
+							<td><c:out value="${board.phoneNo}" /></td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -60,27 +56,25 @@
 							<select name='type'>
 								<option value=""
 									<c:out value="${pageMaker.cri.type == null?'selected':''}"/>>--</option>
-								<option value="T"
-									<c:out value="${pageMaker.cri.type eq 'T'?'selected':''}"/>>제목</option>
-								<option value="C"
-									<c:out value="${pageMaker.cri.type eq 'C'?'selected':''}"/>>내용</option>
-								<option value="W"
-									<c:out value="${pageMaker.cri.type eq 'W'?'selected':''}"/>>작성자</option>
-								<option value="TC"
-									<c:out value="${pageMaker.cri.type eq 'TC'?'selected':''}"/>>제목
-									or 내용</option>
-								<option value="TW"
-									<c:out value="${pageMaker.cri.type eq 'TW'?'selected':''}"/>>제목
-									or 작성자</option>
-								<option value="TWC"
-									<c:out value="${pageMaker.cri.type eq 'TWC'?'selected':''}"/>>제목
-									or 내용 or 작성자</option>
+								<option value="memberid"
+									<c:out value="${pageMaker.cri.type eq memberid?'selected':''}"/>>번호</option>
+								<option value="name"
+									<c:out value="${pageMaker.cri.type eq name?'selected':''}"/>>이름</option>
+								<option value="age"
+									<c:out value="${pageMaker.cri.type eq age?'selected':''}"/>>나이</option>
+								<option value="address"
+									<c:out value="${pageMaker.cri.type eq address?'selected':''}"/>>주소
+								</option>
+								<option value="phoneNo"
+									<c:out value="${pageMaker.cri.type eq phoneNo?'selected':''}"/>>전화번호
+								</option>
+
 							</select> <input type='text' name='keyword'
 								value='<c:out value="${pageMaker.cri.keyword}"/>' /> <input
-								type='hidden' name='pageNum'
-								value='<c:out value="${pageMaker.cri.pageNum}"/>' /> <input
-								type='hidden' name='amount'
-								value='<c:out value="${pageMaker.cri.amount}"/>' />
+								type='hidden' name='currentPageNo'
+								value='<c:out value="${pageMaker.cri.currentPageNo}"/>' /> <input
+								type='hidden' name='recordsPerPage'
+								value='<c:out value="${pageMaker.cri.recordsPerPage}"/>' />
 							<button class='btn btn-default'>Search</button>
 						</form>
 					</div>
@@ -90,20 +84,6 @@
 				<div class='pull-right'>
 					<ul class="pagination">
 
-						<%--             <c:if test="${pageMaker.prev}">
-              <li class="paginate_button previous"><a href="#">Previous</a>
-              </li>
-            </c:if>
-
-            <c:forEach var="num" begin="${pageMaker.startPage}"
-              end="${pageMaker.endPage}">
-              <li class="paginate_button"><a href="#">${num}</a></li>
-            </c:forEach>
-
-            <c:if test="${pageMaker.next}">
-              <li class="paginate_button next"><a href="#">Next</a></li>
-            </c:if> --%>
-
 						<c:if test="${pageMaker.prev}">
 							<li class="paginate_button previous"><a
 								href="${pageMaker.startPage -1}">Previous</a></li>
@@ -111,7 +91,8 @@
 
 						<c:forEach var="num" begin="${pageMaker.startPage}"
 							end="${pageMaker.endPage}">
-							<li class="paginate_button  ${pageMaker.cri.pageNum == num ? "active":""} ">
+							<li
+								class="paginate_button  ${pageMaker.cri.currentPageNo == num ? "active":""} ">
 								<a href="${num}">${num}</a>
 							</li>
 						</c:forEach>
@@ -128,10 +109,11 @@
 			</div>
 
 			<form id='actionForm' action="/board/list" method='get'>
-				<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum}'>
-				<input type='hidden' name='amount' value='${pageMaker.cri.amount}'>
-
-				<input type='hidden' name='type'
+				<input type='hidden' name='currentPageNo'
+					value='${pageMaker.cri.currentPageNo}'> <input
+					type='hidden' name='recordsPerPage'
+					value='${pageMaker.cri.recordsPerPage}'> <input
+					type='hidden' name='type'
 					value='<c:out value="${ pageMaker.cri.type }"/>'> <input
 					type='hidden' name='keyword'
 					value='<c:out value="${ pageMaker.cri.keyword }"/>'>
@@ -220,8 +202,9 @@
 
 									console.log('click');
 
-									actionForm.find("input[name='pageNum']")
-											.val($(this).attr("href"));
+									actionForm.find(
+											"input[name='currentPageNo']").val(
+											$(this).attr("href"));
 									actionForm.submit();
 								});
 
@@ -232,7 +215,7 @@
 
 											e.preventDefault();
 											actionForm
-													.append("<input type='hidden' name='bno' value='"
+													.append("<input type='hidden' name='memberid' value='"
 															+ $(this).attr(
 																	"href")
 															+ "'>");
@@ -260,7 +243,7 @@
 										return false;
 									}
 
-									searchForm.find("input[name='pageNum']")
+									searchForm.find("input[name='currentPageNo']")
 											.val("1");
 									e.preventDefault();
 

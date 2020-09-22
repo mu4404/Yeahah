@@ -17,10 +17,15 @@
 	</insert>
 
 	<select id="read" resultType="com.yi.domain.BoardVO">
-		select * from member where name
+		select * from member where memberid
 		=
-		#{name}
+		#{memberid}
 	</select>
+
+
+
+
+
 
 	<delete id="delete">
 		delete from member where memberid = #{memberid}
@@ -32,15 +37,6 @@
 
 	<update id="update">
 		update member
-		set name = #{name2},
-		age = #{age},
-		address = #{address},
-		phoneNo = #{phoneNo}
-		where name = #{name}
-	</update>
-
-	<update id="update2">
-		update member
 		set name = #{name},
 		age = #{age},
 		address
@@ -49,21 +45,57 @@
 		where memberid = #{memberid}
 	</update>
 
+
+
+	<sql id="criteria">
+		<trim prefix="(" suffix=") AND " prefixOverrides="OR">
+			<foreach item='type' collection="typeArr">
+				<trim prefix="OR">
+					<choose>
+						<when test="type == 'T'.toString()">
+							memberid like concat('%', #{keyword}, '%')
+						</when>
+						<when test="type == 'C'.toString()">
+							name like concat('%', #{keyword}, '%')
+						</when>
+						<when test="type == 'W'.toString()">
+							age like concat('%', #{keyword}, '%')
+						</when>
+					</choose>
+				</trim>
+			</foreach>
+		</trim>
+	</sql>
+
 	<select id="getListWithPaging"
+
 		resultType="com.yi.domain.BoardVO">
+<![CDATA[
 
-		SELECT *
+		SELECT 
+		memberid,
+		name,
+		age,
+		address,
+		phoneNo
 		FROM member
-		WHERE memberid > 0
-		ORDER BY memberid
-		LIMIT #{pageStart}, #{perPageNum}
+		WHERE 
+		
+]]>
+		<include refid="criteria"></include>
+<![CDATA[
 
+		memberid > 0
+		ORDER BY memberid
+		LIMIT #{startPage}, #{recordsPerPage}
+]]>
 
 	</select>
 
 	<select id="getTotalCount" resultType="int">
 		select count(*) from
 		member where
+		<include refid="criteria"></include>
 		memberid > 0
 
 	</select>

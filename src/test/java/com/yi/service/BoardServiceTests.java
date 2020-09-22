@@ -61,17 +61,16 @@ public class BoardServiceTests {
 	@Test
 	public void testUpdate() {
 
-		List<BoardVO> board = service.get("이름");
+		BoardVO board = service.get(1);
 
 		if (board == null) {
 			return;
 		}
-		for (int i = 0; i < board.size(); i++) {
-			board.get(i).setName2("가라");
-			service.modify(board.get(i));
+		board.setName("제목 수정합니다.");
+		log.info("MODIFY RESULT: " + service.modify(board));
 
 		}
 
 	}
 
-}
+

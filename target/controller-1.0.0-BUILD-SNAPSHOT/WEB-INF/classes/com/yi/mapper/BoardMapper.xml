@@ -17,10 +17,15 @@
 	</insert>
 
 	<select id="read" resultType="com.yi.domain.BoardVO">
-		select * from member where name
+		select * from member where memberid
 		=
-		#{name}
+		#{memberid}
 	</select>
+
+	
+		
+
+	
 
 	<delete id="delete">
 		delete from member where memberid = #{memberid}
@@ -50,18 +55,20 @@
 	</update>
 
 	<select id="getListWithPaging"
+		parameterType="com.yi.domain.Criteria"
 		resultType="com.yi.domain.BoardVO">
 
 		SELECT *
 		FROM member
 		WHERE memberid > 0
 		ORDER BY memberid
-		LIMIT #{pageStart}, #{perPageNum}
+		LIMIT #{startPage}, #{recordsPerPage}
 
 
 	</select>
 
-	<select id="getTotalCount" resultType="int">
+	<select id="getTotalCount"
+		parameterType="com.yi.domain.Criteria" resultType="int">
 		select count(*) from
 		member where
 		memberid > 0

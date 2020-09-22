@@ -1,5 +1,6 @@
 package com.yi.service;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,6 @@ import com.yi.mapper.BoardMapper;
 import lombok.AllArgsConstructor;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
-
 
 @Log4j
 @Service
@@ -31,11 +31,11 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public List<BoardVO> get(String name) {
+	public BoardVO get(int memberid) {
 
-		log.info("get......." + name);
+		log.info("get......." + memberid);
 
-		return mapper.read(name);
+		return mapper.read(memberid);
 	}
 
 	@Override
@@ -64,10 +64,20 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	public List<BoardVO> getList(Criteria cri) {
-		// TODO Auto-generated method stub
-		log.info("get list With criteria: " + cri);
 
-		return mapper.getListWithPaging(cri);
+		log.info("get list With criteria:" + cri);
+
+		// return mapper.getListWithPaging(cri);
+
+		List<BoardVO> boardList = Collections.emptyList();
+
+		int boardTotalCount = mapper.getTotalCount(cri);
+
+		if (boardTotalCount > 0) {
+			boardList = mapper.getListWithPaging(cri);
+		}
+
+		return boardList;
 	}
 
 	@Override

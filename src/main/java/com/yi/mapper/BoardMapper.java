@@ -12,17 +12,16 @@ public interface BoardMapper {
 
 	public void insert(BoardVO board);
 
-	public List<BoardVO> read(String name);
+	public BoardVO read(int memberid);
 
 	public int delete(int memberid);
-	
+
 	public int update(BoardVO board);
-	
+
 	public int getTotalCount(Criteria cri);
-	
+
 	public List<BoardVO> getListWithPaging(Criteria cri);
 
 	public int update2(BoardVO board);
-
 
 }

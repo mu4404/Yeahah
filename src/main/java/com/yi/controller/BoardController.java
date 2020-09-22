@@ -1,5 +1,7 @@
 package com.yi.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,7 +32,7 @@ public class BoardController {
 
 	}
 
-//	@GetMapping("/list")
+	//@GetMapping("/list")
 	public void list(Model model) {
 
 		log.info("list");
@@ -47,10 +49,10 @@ public class BoardController {
 	// }
 
 	@GetMapping({ "/get", "/modify" })
-	public void get(@RequestParam("name") String name, @ModelAttribute("cri") Criteria cri, Model model) {
+	public void get(@RequestParam("memberid")int memberid, @ModelAttribute("cri") Criteria cri, Model model) {
 
 		log.info("/get or modify");
-		model.addAttribute("board", service.get(name));
+		model.addAttribute("board", service.get(memberid));
 	}
 
 	@GetMapping("/list")
@@ -58,7 +60,6 @@ public class BoardController {
 
 		log.info("list: " + cri);
 		model.addAttribute("list", service.getList(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, 93));
 
 		int total = service.getTotal(cri);
 
@@ -68,7 +69,15 @@ public class BoardController {
 
 	}
 
-	// @PostMapping("/register")
+	// @GetMapping(value = "/board/list")
+	public String openBoardList(@ModelAttribute("criteria") Criteria criteria, Model model) {
+		List<BoardVO> boardList = service.getList(criteria);
+		model.addAttribute("boardList", boardList);
+
+		return "board/list";
+	}
+
+	@PostMapping("/register")
 	public String register(BoardVO board, RedirectAttributes rttr) {
 
 		log.info("register: " + board);
@@ -105,9 +114,8 @@ public class BoardController {
 			rttr.addFlashAttribute("result", "success");
 		}
 
-		rttr.addAttribute("pageNum", cri.getPage());
-		rttr.addAttribute("amount", cri.getPageStart());
-		rttr.addAttribute("type", cri.getPerPageNum());
+		rttr.addAttribute("startPage", cri.getStartPage());
+		rttr.addAttribute("recordsPerPage", cri.getRecordsPerPage());
 
 		return "redirect:/board/list";
 	}
@@ -130,9 +138,9 @@ public class BoardController {
 		if (service.remove(memberid)) {
 			rttr.addFlashAttribute("result", "success");
 		}
-		rttr.addAttribute("pageNum", cri.getPage());
-		rttr.addAttribute("amount", cri.getPageStart());
-		rttr.addAttribute("type", cri.getPerPageNum());
+
+		rttr.addAttribute("startPage", cri.getStartPage());
+		rttr.addAttribute("recordsPerPage", cri.getRecordsPerPage());
 
 		return "redirect:/board/list";
 	}

@@ -1,47 +1,42 @@
 package com.yi.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
 
-
-@ToString
-@Setter
-@Getter
+@Data
 public class Criteria {
-    
-    private int page;
-    private int perPageNum;
-    
-    public int getPageStart() {
-        return (this.page)*perPageNum;
-    }
-    
-    public Criteria() {
-        this.page = 0;
-        this.perPageNum = 10;
-    }
-    
-    public int getPage() {
-        return page;
-    }
-    public void setPage(int page) {
-        if(page <= 0) {
-            this.page = 0;
-        } else {
-            this.page = page;
-        }
-    }
-    public int getPerPageNum() {
-        return perPageNum;
-    }
-    public void setPerPageNum(int pageCount) {
-        int cnt = this.perPageNum;
-        if(pageCount != cnt) {
-            this.perPageNum = cnt;
-        } else {
-            this.perPageNum = pageCount;
-        }
-    }
-    
+
+	/** 현재 페이지 번호 */
+	private int currentPageNo;
+
+	/** 페이지당 출력할 데이터 개수 */
+	private int recordsPerPage;
+
+	/** 화면 하단에 출력할 페이지 사이즈 */
+	private int pageSize;
+
+	/** 검색 키워드 */
+	private String keyword;
+
+	/** 검색 유형 */
+	private String type;
+
+	public Criteria() {
+		this.currentPageNo = 1;
+		this.recordsPerPage = 10;
+		this.pageSize = 10;
+	}
+
+	public Criteria(int currentPageNo, int recordsPerPage) {
+		this.currentPageNo = currentPageNo;
+		this.recordsPerPage = recordsPerPage;
+	}
+
+	public int getStartPage() {
+		return (currentPageNo - 1) * recordsPerPage;
+	}
+
+	public String[] getTypeArr() {
+		return type == null ? new String[] {} : type.split("");
+	}
+
 }

@@ -9,7 +9,7 @@ public interface BoardService {
 
 	public void register(BoardVO board);
 
-	public List<BoardVO> get(String name);
+	public BoardVO get(int memberid);
 
 	public boolean modify(BoardVO boardVO);
 

@@ -49,7 +49,7 @@ public class BoardMapperTests {
 	@Test
 	public void testRead() {
 
-		List<BoardVO> board = mapper.read("가라");
+		BoardVO board = mapper.read(1);
 
 		log.info(board);
 	}

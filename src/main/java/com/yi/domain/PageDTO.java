@@ -1,9 +1,9 @@
 package com.yi.domain;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.ToString;
 
-@Getter
+@Data
 @ToString
 public class PageDTO {
 
@@ -19,11 +19,11 @@ public class PageDTO {
     this.cri = cri;
     this.total = total;
 
-    this.endPage = (int) (Math.ceil(cri.getPage() / 10.0)) * 10;
+    this.endPage = (int) (Math.ceil(cri.getCurrentPageNo() / 10.0)) * 10;
 
     this.startPage = this.endPage - 9;
 
-    int realEnd = (int) (Math.ceil((total * 1.0) / cri.getPage()));
+    int realEnd = (int) (Math.ceil((total * 1.0) / cri.getRecordsPerPage()));
 
     if (realEnd <= this.endPage) {
       this.endPage = realEnd;
